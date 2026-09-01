@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api-gateway
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    depends_on:
+      - auth-service
+      - camera-service
+    networks:
+      - soira_network
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.auth-service
+    env_file:
+      - .env
+    networks:
+      - soira_network
+
+  camera-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.camera-service
+    env_file:
+      - .env
+    networks:
+      - soira_network
+
+networks:
+  soira_network:
+    driver: bridge
